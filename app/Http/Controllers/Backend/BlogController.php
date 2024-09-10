@@ -7,8 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\BlogCategory;
 use Carbon\Carbon;
 use App\Models\BlogPost;
-use App\Models\User;
-use Intervention\Image\Facades\Image;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Comment;
 
@@ -84,9 +84,10 @@ class BlogController extends Controller
 
     public function StorePost(Request $request)
     {
+        $manager = new ImageManager(new Driver());
         $image = $request->file('post_image');
         $name_gen = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
-        Image::make($image)->resize(370, 250)->save('upload/post/' . $name_gen);
+        $manager->read($image)->resize(370, 250)->toJpeg(80)->save(base_path('public/upload/post/' . $name_gen));
         $save_url = 'upload/post/' . $name_gen;
 
         BlogPost::insert([
@@ -121,9 +122,10 @@ class BlogController extends Controller
     {
         $post_id = $request->id;
         if ($request->file('post_image')) {
+            $manager = new ImageManager(new Driver());
             $image = $request->file('post_image');
             $name_gen = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
-            Image::make($image)->resize(370, 250)->save('upload/post/' . $name_gen);
+            $manager->read($image)->resize(370, 250)->toJpeg(80)->save(base_path('public/upload/post/' . $name_gen));
             $save_url = 'upload/post/' . $name_gen;
 
             BlogPost::findOrFail($post_id)->update([

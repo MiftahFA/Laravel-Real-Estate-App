@@ -4,10 +4,9 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\Models\PropertyType;
 use App\Models\State;
-use Intervention\Image\Facades\Image;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class StateController extends Controller
 {
@@ -26,13 +25,16 @@ class StateController extends Controller
     public function StoreState(Request $request)
     {
         $image = $request->file('state_image');
+        $manager = new ImageManager(new Driver());
         $name_gen = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
-        Image::make($image)->resize(370, 275)->save('upload/state/' . $name_gen);
+        $manager->read($image)->resize(370, 275)->toJpeg(80)->save(base_path('public/upload/state/' . $name_gen));
         $save_url = 'upload/state/' . $name_gen;
+
         State::insert([
             'state_name' => $request->state_name,
             'state_image' => $save_url,
         ]);
+
         $notification = array(
             'message' => 'State Inserted Successfully',
             'alert-type' => 'success'
@@ -55,8 +57,9 @@ class StateController extends Controller
 
         if ($request->file('state_image')) {
             $image = $request->file('state_image');
+            $manager = new ImageManager(new Driver());
             $name_gen = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
-            Image::make($image)->resize(370, 275)->save('upload/state/' . $name_gen);
+            $manager->read($image)->resize(370, 275)->toJpeg(80)->save(base_path('public/upload/state/' . $name_gen));
             $save_url = 'upload/state/' . $name_gen;
 
             State::findOrFail($state_id)->update([

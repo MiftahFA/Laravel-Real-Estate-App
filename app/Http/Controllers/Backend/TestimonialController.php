@@ -4,10 +4,9 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\Models\PropertyType;
 use App\Models\Testimonial;
-use Intervention\Image\Facades\Image;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class TestimonialController extends Controller
 {
@@ -25,10 +24,10 @@ class TestimonialController extends Controller
 
     public function StoreTestimonials(Request $request)
     {
-
         $image = $request->file('image');
+        $manager = new ImageManager(new Driver());
         $name_gen = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
-        Image::make($image)->resize(100, 100)->save('upload/testimonial/' . $name_gen);
+        $manager->read($image)->resize(100, 100)->toJpeg(80)->save(base_path('public/upload/testimonial/' . $name_gen));
         $save_url = 'upload/testimonial/' . $name_gen;
 
         Testimonial::insert([
@@ -58,10 +57,10 @@ class TestimonialController extends Controller
         $test_id = $request->id;
 
         if ($request->file('image')) {
-
             $image = $request->file('image');
+            $manager = new ImageManager(new Driver());
             $name_gen = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
-            Image::make($image)->resize(100, 100)->save('upload/testimonial/' . $name_gen);
+            $manager->read($image)->resize(100, 100)->toJpeg(80)->save(base_path('public/upload/testimonial/' . $name_gen));
             $save_url = 'upload/testimonial/' . $name_gen;
 
             Testimonial::findOrFail($test_id)->update([

@@ -27,7 +27,7 @@ class RoleController extends Controller
 
     public function StorePermission(Request $request)
     {
-        $permission = Permission::create([
+        Permission::create([
             'name' => $request->name,
             'group_name' => $request->group_name,
         ]);

@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
 use App\Models\SmtpSetting;
 use App\Models\SiteSetting;
-use Intervention\Image\Facades\Image;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class SettingController extends Controller
 {
@@ -52,9 +52,10 @@ class SettingController extends Controller
         $site_id = $request->id;
 
         if ($request->file('logo')) {
+            $manager = new ImageManager(new Driver());
             $image = $request->file('logo');
             $name_gen = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
-            Image::make($image)->resize(1500, 386)->save('upload/logo/' . $name_gen);
+            $manager->read($image)->resize(370, 250)->toJpeg(80)->save(base_path('upload/logo/' . $name_gen));
             $save_url = 'upload/logo/' . $name_gen;
 
             SiteSetting::findOrFail($site_id)->update([

@@ -10,7 +10,8 @@ use App\Models\Facility;
 use App\Models\Amenities;
 use App\Models\PropertyType;
 use App\Models\User;
-use Intervention\Image\Facades\Image;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Carbon\Carbon;
 use App\Models\PackagePlan;
@@ -42,9 +43,10 @@ class PropertyController extends Controller
 
         $pcode = IdGenerator::generate(['table' => 'properties', 'field' => 'property_code', 'length' => 5, 'prefix' => 'PC']);
 
+        $manager = new ImageManager(new Driver());
         $image = $request->file('property_thambnail');
         $name_gen = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
-        Image::make($image)->resize(370, 250)->save('upload/property/thambnail/' . $name_gen);
+        $manager->read($image)->resize(370, 250)->toJpeg(80)->save(base_path('public/upload/property/thambnail/' . $name_gen));
         $save_url = 'upload/property/thambnail/' . $name_gen;
 
         $property_id = Property::insertGetId([
@@ -86,7 +88,7 @@ class PropertyController extends Controller
         $images = $request->file('multi_img');
         foreach ($images as $img) {
             $make_name = hexdec(uniqid()) . '.' . $img->getClientOriginalExtension();
-            Image::make($img)->resize(770, 520)->save('upload/property/multi-image/' . $make_name);
+            $manager->read($image)->resize(770, 520)->toJpeg(80)->save(base_path('public/upload/property/multi-image/' .  $make_name));
             $uploadPath = 'upload/property/multi-image/' . $make_name;
             MultiImage::insert([
                 'property_id' => $property_id,
@@ -182,12 +184,12 @@ class PropertyController extends Controller
 
     public function UpdatePropertyThambnail(Request $request)
     {
-
         $pro_id = $request->id;
         $oldImage = $request->old_img;
         $image = $request->file('property_thambnail');
+        $manager = new ImageManager(new Driver());
         $name_gen = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
-        Image::make($image)->resize(370, 250)->save('upload/property/thambnail/' . $name_gen);
+        $manager->read($image)->resize(370, 250)->toJpeg(80)->save(base_path('public/upload/property/thambnail/' . $name_gen));
         $save_url = 'upload/property/thambnail/' . $name_gen;
 
         if (file_exists($oldImage)) {
@@ -211,11 +213,12 @@ class PropertyController extends Controller
     {
         $imgs = $request->multi_img;
         if ($imgs != null) {
+            $manager = new ImageManager(new Driver());
             foreach ($imgs as $id => $img) {
                 $imgDel = MultiImage::findOrFail($id);
                 unlink($imgDel->photo_name);
                 $make_name = hexdec(uniqid()) . '.' . $img->getClientOriginalExtension();
-                Image::make($img)->resize(770, 520)->save('upload/property/multi-image/' . $make_name);
+                $img = $manager->read($img)->resize(770, 520)->toJpeg(80)->save(base_path('public/upload/property/thambnail/' . $make_name));
                 $uploadPath = 'upload/property/multi-image/' . $make_name;
                 MultiImage::where('id', $id)->update([
                     'photo_name' => $uploadPath,
@@ -254,8 +257,9 @@ class PropertyController extends Controller
     {
         $new_multi = $request->imageid;
         $image = $request->file('multi_img');
+        $manager = new ImageManager(new Driver());
         $make_name = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
-        Image::make($image)->resize(770, 520)->save('upload/property/multi-image/' . $make_name);
+        $manager->read($image)->resize(770, 520)->toJpeg(80)->save(base_path('public/upload/property/multi-image/' . $make_name));
         $uploadPath = 'upload/property/multi-image/' . $make_name;
         MultiImage::insert([
             'property_id' => $new_multi,

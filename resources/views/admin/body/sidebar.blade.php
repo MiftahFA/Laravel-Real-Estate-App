@@ -20,57 +20,57 @@
             </li>
             <li class="nav-item nav-category">RealEstate</li>
 
-            @if(Auth::user()->can('type.menu'))
-            <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="collapse" href="#emails" role="button" aria-expanded="false"
-                    aria-controls="emails">
-                    <i class="link-icon" data-feather="mail"></i>
-                    <span class="link-title">Property Type </span>
-                    <i class="link-arrow" data-feather="chevron-down"></i>
-                </a>
-                <div class="collapse" id="emails">
-                    <ul class="nav sub-menu">
+            @if (Auth::user()->can('type.menu'))
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="collapse" href="#emails" role="button" aria-expanded="false"
+                        aria-controls="emails">
+                        <i class="link-icon" data-feather="mail"></i>
+                        <span class="link-title">Property Type </span>
+                        <i class="link-arrow" data-feather="chevron-down"></i>
+                    </a>
+                    <div class="collapse" id="emails">
+                        <ul class="nav sub-menu">
 
-                        @if(Auth::user()->can('all.type'))
-                        <li class="nav-item">
-                            <a href="{{ route('all.type') }}" class="nav-link">All Type</a>
-                        </li>
-                        @endif
-                        @if(Auth::user()->can('add.type'))
-                        <li class="nav-item">
-                            <a href="{{ route('add.type') }}" class="nav-link">Add Type</a>
-                        </li>
-                        @endif
+                            @if (Auth::user()->can('all.type'))
+                                <li class="nav-item">
+                                    <a href="{{ route('all.type') }}" class="nav-link">All Type</a>
+                                </li>
+                            @endif
+                            @if (Auth::user()->can('add.type'))
+                                <li class="nav-item">
+                                    <a href="{{ route('add.type') }}" class="nav-link">Add Type</a>
+                                </li>
+                            @endif
 
-                    </ul>
-                </div>
-            </li>
+                        </ul>
+                    </div>
+                </li>
             @endif
 
 
-            @if(Auth::user()->can('state.menu'))
-            <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="collapse" href="#state" role="button" aria-expanded="false"
-                    aria-controls="emails">
-                    <i class="link-icon" data-feather="mail"></i>
-                    <span class="link-title">Property State </span>
-                    <i class="link-arrow" data-feather="chevron-down"></i>
-                </a>
-                <div class="collapse" id="state">
-                    <ul class="nav sub-menu">
-                        @if(Auth::user()->can('state.all'))
-                        <li class="nav-item">
-                            <a href="{{ route('all.state') }}" class="nav-link">All State</a>
-                        </li>
-                        @endif
-                        @if(Auth::user()->can('state.add'))
-                        <li class="nav-item">
-                            <a href="{{ route('add.state') }}" class="nav-link">Add State</a>
-                        </li>
-                        @endif
-                    </ul>
-                </div>
-            </li>
+            @if (Auth::user()->can('state.menu'))
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="collapse" href="#state" role="button" aria-expanded="false"
+                        aria-controls="emails">
+                        <i class="link-icon" data-feather="mail"></i>
+                        <span class="link-title">Property State </span>
+                        <i class="link-arrow" data-feather="chevron-down"></i>
+                    </a>
+                    <div class="collapse" id="state">
+                        <ul class="nav sub-menu">
+                            @if (Auth::user()->can('state.all'))
+                                <li class="nav-item">
+                                    <a href="{{ route('all.state') }}" class="nav-link">All State</a>
+                                </li>
+                            @endif
+                            @if (Auth::user()->can('state.add'))
+                                <li class="nav-item">
+                                    <a href="{{ route('add.state') }}" class="nav-link">Add State</a>
+                                </li>
+                            @endif
+                        </ul>
+                    </div>
+                </li>
             @endif
 
             <li class="nav-item">
@@ -86,7 +86,7 @@
                             <a href="{{ route('all.amenitie') }}" class="nav-link">All Amenitie</a>
                         </li>
                         <li class="nav-item">
-                            <a href="pages/email/read.html" class="nav-link">Add Amenitie</a>
+                            <a href="{{ route('add.amenitie') }}" class="nav-link">Add Amenitie</a>
                         </li>
 
                     </ul>
@@ -130,8 +130,8 @@
 
 
             <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="collapse" href="#testimonials" role="button" aria-expanded="false"
-                    aria-controls="emails">
+                <a class="nav-link" data-bs-toggle="collapse" href="#testimonials" role="button"
+                    aria-expanded="false" aria-controls="emails">
                     <i class="link-icon" data-feather="mail"></i>
                     <span class="link-title">Testimonials Manage </span>
                     <i class="link-arrow" data-feather="chevron-down"></i>
@@ -156,8 +156,8 @@
 
 
             <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="collapse" href="#uiComponents" role="button" aria-expanded="false"
-                    aria-controls="uiComponents">
+                <a class="nav-link" data-bs-toggle="collapse" href="#uiComponents" role="button"
+                    aria-expanded="false" aria-controls="uiComponents">
                     <i class="link-icon" data-feather="feather"></i>
                     <span class="link-title">Manage Agent </span>
                     <i class="link-arrow" data-feather="chevron-down"></i>
@@ -178,8 +178,8 @@
 
 
             <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="collapse" href="#blogcategory" role="button" aria-expanded="false"
-                    aria-controls="uiComponents">
+                <a class="nav-link" data-bs-toggle="collapse" href="#blogcategory" role="button"
+                    aria-expanded="false" aria-controls="uiComponents">
                     <i class="link-icon" data-feather="feather"></i>
                     <span class="link-title">Blog Category </span>
                     <i class="link-arrow" data-feather="chevron-down"></i>
@@ -242,8 +242,8 @@
 
             <li class="nav-item nav-category">Role & Permission</li>
             <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="collapse" href="#advancedUI" role="button" aria-expanded="false"
-                    aria-controls="advancedUI">
+                <a class="nav-link" data-bs-toggle="collapse" href="#advancedUI" role="button"
+                    aria-expanded="false" aria-controls="advancedUI">
                     <i class="link-icon" data-feather="anchor"></i>
                     <span class="link-title">Role & Permission</span>
                     <i class="link-arrow" data-feather="chevron-down"></i>
@@ -262,7 +262,8 @@
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('all.roles.permission') }}" class="nav-link">All Role in Permission </a>
+                            <a href="{{ route('all.roles.permission') }}" class="nav-link">All Role in Permission
+                            </a>
                         </li>
 
                     </ul>
